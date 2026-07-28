@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Ti</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================================= -->
+  <!-- CAPA DE EFECTOS: flores, pétalos y destellos   -->
+  <!-- Se generan dinámicamente desde script.js       -->
+  <!-- ============================================= -->
+  <div class="petals-layer" id="petalsLayer" aria-hidden="true"></div>
+  <div class="sparkles-layer" id="sparklesLayer" aria-hidden="true"></div>
+
+  <!-- ============================================= -->
+  <!-- APARTADO 1                                     -->
+  <!-- ============================================= -->
+  <section class="stage stage--active" id="stage1">
+    <div class="collage collage--four">
+      <div class="collage__item collage__item--1">
+        <img src="foto1.jpg" alt="" loading="eager" />
+      </div>
+      <div class="collage__item collage__item--2">
+        <img src="foto2.jpg" alt="" loading="eager" />
+      </div>
+      <div class="collage__item collage__item--3">
+        <img src="foto3.jpg" alt="" loading="eager" />
+      </div>
+      <div class="collage__item collage__item--4">
+        <img src="foto4.jpg" alt="" loading="eager" />
+      </div>
+    </div>
+
+    <div class="scrim"></div>
+
+    <div class="stage__content">
+      <h1 class="hello-text fade-in-up">Holaaaa</h1>
+      <p class="question-text fade-in-up delay-1">¿Quieres ver algo hoy?</p>
+
+      <button class="btn btn--glow fade-in-up delay-2" id="btnContinuar" type="button">
+        <span class="btn__shine"></span>
+        <span class="btn__label">CONTINUAR</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- APARTADO 2                                     -->
+  <!-- ============================================= -->
+  <section class="stage" id="stage2">
+    <div class="collage collage--four">
+      <div class="collage__item collage__item--1">
+        <img src="foto5.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="collage__item collage__item--2">
+        <img src="foto6.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="collage__item collage__item--3">
+        <img src="foto7.jpg" alt="" loading="lazy" />
+      </div>
+      <div class="collage__item collage__item--4">
+        <img src="foto8.jpg" alt="" loading="lazy" />
+      </div>
+    </div>
+
+    <div class="scrim"></div>
+
+    <div class="stage__content">
+      <div class="glass-card card-appear">
+        <p class="card-quote">
+          "AUNQUE LA DISTANCIA SEA DEMASIADA,<br />
+          EL AMOR SIEMPRE LA ALCANZA."
+        </p>
+      </div>
+
+      <button class="btn btn--glow card-appear delay-1" id="btnSigue" type="button">
+        <span class="btn__shine"></span>
+        <span class="btn__label">SIGUE AQUIIIII</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================================= -->
+  <!-- APARTADO 3                                     -->
+  <!-- ============================================= -->
+  <section class="stage" id="stage3">
+    <div class="collage collage--bg" id="bgCollage">
+      <img src="foto1.jpg" alt="" loading="lazy" />
+      <img src="foto2.jpg" alt="" loading="lazy" />
+      <img src="foto3.jpg" alt="" loading="lazy" />
+      <img src="foto4.jpg" alt="" loading="lazy" />
+      <img src="foto5.jpg" alt="" loading="lazy" />
+      <img src="foto6.jpg" alt="" loading="lazy" />
+      <img src="foto7.jpg" alt="" loading="lazy" />
+      <img src="foto8.jpg" alt="" loading="lazy" />
+    </div>
+
+    <div class="scrim scrim--soft"></div>
+
+    <div class="stage__content stage__content--final">
+      <div class="glass-card glass-card--large card-appear">
+        <p class="card-quote">
+          "PARA QUE QUIERO IR AL ESPACIO,<br />
+          SI DESDE TUS OJOS PUEDO VER<br />
+          EL UNIVERSO ENTERO."
+        </p>
+      </div>
+
+      <div class="eyes-frame card-appear delay-1">
+        <img src="foto9.jpg" alt="Tus ojos" class="eyes-photo" loading="lazy" />
+      </div>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
