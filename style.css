@@ -97,47 +97,111 @@ button {
 }
 
 /* =====================================================================
-   COLLAGE — Apartados 1 y 2 (cuatro fotos con profundidad)
+   COLLAGE DISPERSO — Apartados 1 y 2 (estilo Instagram / Pinterest)
+   En vez de una cuadrícula, cada fotografía es una pieza posicionada
+   libremente: tamaños distintos, ligera rotación, superposición y
+   sombra suave para dar profundidad. Usamos las propiedades CSS
+   independientes `rotate`, `scale` y `translate` (en vez del atajo
+   `transform`) para poder animar el flotado sin pisar la rotación fija.
    ===================================================================== */
-.collage {
+.collage-scatter {
   position: absolute;
   inset: 0;
   z-index: 1;
-}
-
-.collage--four {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  height: 100%;
-}
-
-.collage__item {
-  position: relative;
   overflow: hidden;
-  height: 100%;
-  transform: scale(1.08);
-  filter: saturate(1.05) brightness(0.92);
-  animation: collageIn 1.4s var(--ease-soft) backwards;
 }
 
-.collage__item--1 { transform: scale(1.08) rotate(-2deg); animation-delay: 0.05s; }
-.collage__item--2 { transform: scale(1.1) rotate(1.5deg); animation-delay: 0.15s; }
-.collage__item--3 { transform: scale(1.1) rotate(-1.5deg); animation-delay: 0.25s; }
-.collage__item--4 { transform: scale(1.08) rotate(2deg); animation-delay: 0.35s; }
+.collage-item {
+  position: absolute;
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow:
+    0 18px 40px rgba(28, 5, 13, 0.45),
+    0 2px 10px rgba(28, 5, 13, 0.3),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.25);
+  filter: saturate(1.05) brightness(0.93);
+  animation:
+    collageIn 1.3s var(--ease-soft) backwards,
+    floatCollage 7s ease-in-out infinite;
+}
+
+.collage-item img {
+  transition: transform 8s var(--ease-smooth);
+}
+
+.stage--active .collage-item img {
+  transform: scale(1.12);
+}
 
 @keyframes collageIn {
   from {
     opacity: 0;
-    transform: scale(1.25) rotate(0deg);
+    scale: 0.85;
+    translate: 0 26px;
   }
 }
 
-.collage__item img {
-  transition: transform 8s var(--ease-smooth);
+/* Flotado sutil: usa `translate`, independiente de `rotate`, así cada
+   pieza conserva su inclinación fija mientras flota suavemente. */
+@keyframes floatCollage {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -10px; }
 }
 
-.stage--active .collage__item img {
-  transform: scale(1.12);
+/* --- Apartado 1 (foto1–foto4): disposición base --- */
+.collage-item--1 {
+  top: 4%; left: 2%; right: auto; bottom: auto;
+  width: 30%; height: 48%;
+  rotate: -4deg;
+  z-index: 2;
+  animation-delay: 0.05s, 0.1s;
+  animation-duration: 1.3s, 6.5s;
+}
+.collage-item--2 {
+  top: 8%; right: 4%; left: auto; bottom: auto;
+  width: 26%; height: 40%;
+  rotate: 3deg;
+  z-index: 3;
+  animation-delay: 0.15s, 0.6s;
+  animation-duration: 1.3s, 7.2s;
+}
+.collage-item--3 {
+  bottom: 6%; left: 9%; right: auto; top: auto;
+  width: 28%; height: 44%;
+  rotate: -3deg;
+  z-index: 1;
+  animation-delay: 0.25s, 0.3s;
+  animation-duration: 1.3s, 7.8s;
+}
+.collage-item--4 {
+  bottom: 4%; right: 7%; left: auto; top: auto;
+  width: 32%; height: 50%;
+  rotate: 5deg;
+  z-index: 2;
+  animation-delay: 0.35s, 0.9s;
+  animation-duration: 1.3s, 6.9s;
+}
+
+/* --- Apartado 2 (foto5–foto8): variante espejo para dar variedad --- */
+.collage-scatter--variant-b .collage-item--1 {
+  top: 6%; right: 3%; left: auto; bottom: auto;
+  width: 29%; height: 47%;
+  rotate: 4deg;
+}
+.collage-scatter--variant-b .collage-item--2 {
+  top: 5%; left: 5%; right: auto; bottom: auto;
+  width: 25%; height: 38%;
+  rotate: -3deg;
+}
+.collage-scatter--variant-b .collage-item--3 {
+  bottom: 5%; right: 10%; left: auto; top: auto;
+  width: 27%; height: 43%;
+  rotate: 3deg;
+}
+.collage-scatter--variant-b .collage-item--4 {
+  bottom: 3%; left: 6%; right: auto; top: auto;
+  width: 31%; height: 49%;
+  rotate: -5deg;
 }
 
 /* Filtro oscuro semitransparente para lectura */
@@ -164,38 +228,36 @@ button {
 }
 
 /* =====================================================================
-   COLLAGE DE FONDO — Apartado 3 (ocho fotos, difuminadas)
+   COLLAGE DE FONDO — Apartado 3 (ocho fotos dispersas, difuminadas)
+   Misma lógica de collage disperso, pero con opacidad y desenfoque
+   reducidos para que el texto de la carta se lea con claridad.
    ===================================================================== */
-.collage--bg {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  height: 100%;
+.collage-scatter--bg .collage-item {
+  border-radius: 18px;
+  box-shadow: none;
+  animation:
+    collageIn 1.3s var(--ease-soft) backwards,
+    bgFloat 13s ease-in-out infinite;
 }
 
-.collage--bg img {
+.collage-scatter--bg .collage-item img {
   opacity: 0.35;
   filter: blur(3px) saturate(1.1);
-  transform: scale(1.1);
-  animation: bgFloat 12s ease-in-out infinite alternate;
 }
-
-.collage--bg img:nth-child(odd) {
-  animation-duration: 14s;
-}
-
-.collage--bg img:nth-child(2) { animation-delay: -2s; }
-.collage--bg img:nth-child(3) { animation-delay: -4s; }
-.collage--bg img:nth-child(4) { animation-delay: -6s; }
-.collage--bg img:nth-child(5) { animation-delay: -1s; }
-.collage--bg img:nth-child(6) { animation-delay: -3s; }
-.collage--bg img:nth-child(7) { animation-delay: -5s; }
-.collage--bg img:nth-child(8) { animation-delay: -7s; }
 
 @keyframes bgFloat {
-  from { transform: scale(1.1) translateY(0); }
-  to   { transform: scale(1.16) translateY(-1.5%); }
+  0%, 100% { translate: 0 0; scale: 1.08; }
+  50%      { translate: 0 -14px; scale: 1.14; }
 }
+
+.collage-item--bg-1 { top: 0%;   left: 0%;  width: 27%; height: 53%; rotate: -4deg; z-index: 1; animation-delay: 0.05s, 0s; }
+.collage-item--bg-2 { top: 4%;   left: 24%; width: 25%; height: 47%; rotate: 3deg;  z-index: 2; animation-delay: 0.1s, -2s; }
+.collage-item--bg-3 { top: -2%;  left: 47%; width: 28%; height: 50%; rotate: -2deg; z-index: 1; animation-delay: 0.15s, -4s; }
+.collage-item--bg-4 { top: 6%;   left: 73%; width: 27%; height: 49%; rotate: 4deg;  z-index: 2; animation-delay: 0.2s, -6s; }
+.collage-item--bg-5 { top: 49%;  left: 1%;  width: 26%; height: 52%; rotate: 2deg;  z-index: 2; animation-delay: 0.25s, -1s; }
+.collage-item--bg-6 { top: 45%;  left: 25%; width: 28%; height: 56%; rotate: -3deg; z-index: 1; animation-delay: 0.3s, -3s; }
+.collage-item--bg-7 { top: 51%;  left: 51%; width: 25%; height: 50%; rotate: 5deg;  z-index: 2; animation-delay: 0.35s, -5s; }
+.collage-item--bg-8 { top: 47%;  left: 75%; width: 27%; height: 54%; rotate: -4deg; z-index: 1; animation-delay: 0.4s, -7s; }
 
 /* =====================================================================
    CONTENIDO CENTRAL DE CADA ESCENA
@@ -366,19 +428,24 @@ button {
    APARTADO 3 — Fotografía de los ojos
    ===================================================================== */
 .eyes-frame {
-  width: min(84vw, 460px);
-  aspect-ratio: 4 / 3;
-  border-radius: 26px;
-  overflow: hidden;
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(255, 111, 156, 0.35),
-    inset 0 0 0 2px rgba(255, 255, 255, 0.5);
-  animation: floatSlow 5s ease-in-out infinite;
+    width: min(92vw, 720px);
+    max-width: 720px;
+    aspect-ratio: 16 / 9;
+    border-radius: 26px;
+    overflow: hidden;
+    box-shadow:
+        0 20px 50px rgba(0,0,0,.5),
+        0 0 40px rgba(255,111,156,.35),
+        inset 0 0 0 2px rgba(255,255,255,.5);
+    animation: floatSlow 5s ease-in-out infinite;
 }
 
 .eyes-photo {
-  animation: eyesZoom 10s ease-in-out infinite alternate;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    animation: eyesZoom 10s ease-in-out infinite alternate;
 }
 
 @keyframes eyesZoom {
@@ -496,63 +563,63 @@ button {
 
 /* =====================================================================
    RESPONSIVE — REDISEÑO MÓVIL
-   Los collages de 4 fotos se reorganizan en un mosaico dinámico estilo
-   Instagram/Pinterest (una foto grande + fotos más pequeñas) en vez de
-   comprimirse en 4 columnas iguales, que era lo que las cortaba
-   demasiado. Cada celda usa object-fit: cover, así que nunca se
-   deforman, solo se recortan de forma controlada y elegante.
+   En celulares NO se reduce el collage de escritorio: se define una
+   distribución dispersa propia, vertical, con fotos que se asoman
+   fuera del borde (bleed) alternando izquierda/derecha, rotaciones y
+   superposición — pensada para pantallas altas y angostas.
    ===================================================================== */
 @media (max-width: 768px) {
 
-  /* --- Mosaico apartado 1 (foto1–foto4): 1 grande + 2 medianas + 1 tira --- */
-  .collage--four {
-    display: grid;
-    grid-template-columns: 1.15fr 1fr;
-    grid-template-rows: 1fr 1fr 0.85fr;
-    grid-template-areas:
-      "big  s1"
-      "big  s2"
-      "s3   s3";
-    gap: 5px;
-    padding: 5px;
-    background: var(--wine-900);
+  /* --- Collage disperso apartado 1 (foto1–foto4), distribución móvil --- */
+  .collage-item--1 {
+    top: -2%; left: -6%; right: auto; bottom: auto;
+    width: 60%; height: 32%;
+    rotate: -5deg;
+    z-index: 2;
+  }
+  .collage-item--2 {
+    top: 22%; right: -8%; left: auto; bottom: auto;
+    width: 56%; height: 30%;
+    rotate: 4deg;
+    z-index: 3;
+  }
+  .collage-item--3 {
+    top: 47%; left: -7%; right: auto; bottom: auto;
+    width: 58%; height: 31%;
+    rotate: -3deg;
+    z-index: 1;
+  }
+  .collage-item--4 {
+    bottom: -2%; right: -6%; left: auto; top: auto;
+    width: 62%; height: 33%;
+    rotate: 5deg;
+    z-index: 2;
   }
 
-  /* --- Mosaico apartado 2 (foto5–foto8): variante espejo para dar variedad --- */
-  .collage--variant-b {
-    grid-template-columns: 1fr 1.15fr;
-    grid-template-areas:
-      "s1   big"
-      "s2   big"
-      "s3   s3";
+  /* --- Collage disperso apartado 2 (foto5–foto8), variante espejo --- */
+  .collage-scatter--variant-b .collage-item--1 {
+    top: -2%; right: -6%; left: auto; bottom: auto;
+    width: 58%; height: 31%;
+    rotate: 5deg;
+  }
+  .collage-scatter--variant-b .collage-item--2 {
+    top: 23%; left: -8%; right: auto; bottom: auto;
+    width: 60%; height: 30%;
+    rotate: -4deg;
+  }
+  .collage-scatter--variant-b .collage-item--3 {
+    top: 48%; right: -7%; left: auto; bottom: auto;
+    width: 56%; height: 32%;
+    rotate: 3deg;
+  }
+  .collage-scatter--variant-b .collage-item--4 {
+    bottom: -2%; left: -6%; right: auto; top: auto;
+    width: 62%; height: 33%;
+    rotate: -5deg;
   }
 
-  .collage__item--1 { grid-area: big; }
-  .collage__item--2 { grid-area: s1; }
-  .collage__item--3 { grid-area: s2; }
-  .collage__item--4 { grid-area: s3; }
-
-  .collage--variant-b .collage__item--1 { grid-area: big; }
-  .collage--variant-b .collage__item--2 { grid-area: s1; }
-  .collage--variant-b .collage__item--3 { grid-area: s2; }
-  .collage--variant-b .collage__item--4 { grid-area: s3; }
-
-  .collage__item {
-    border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(28, 5, 13, 0.4);
-  }
-
-  /* Sin rotación en el mosaico: con celdas de tamaños distintos,
-     rotar dejaría huecos. Se conserva un ligero zoom para profundidad. */
-  .collage__item--1,
-  .collage__item--2,
-  .collage__item--3,
-  .collage__item--4 {
-    transform: scale(1.04) rotate(0deg);
-  }
-
-  .stage--active .collage__item img {
-    transform: scale(1.07);
+  .collage-item {
+    border-radius: 18px;
   }
 
   /* --- Contenido central: márgenes y tipografía cómodos --- */
@@ -599,51 +666,30 @@ button {
     line-height: 1.5;
   }
 
-  /* --- Collage de fondo (apartado 3): mosaico tipo Pinterest (alturas
-     alternadas) usando filas base pequeñas y "grid-row: span" --- */
-  .collage--bg {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: none;
-    grid-auto-rows: 8px;
-    grid-auto-flow: row dense;
-    gap: 4px;
-    padding: 4px;
-  }
+  /* --- Collage de fondo apartado 3 (ocho fotos), tira vertical dispersa --- */
+  .collage-item--bg-1 { top: -2%; left: -6%;  right: auto; width: 56%; height: 16%; rotate: -4deg; }
+  .collage-item--bg-2 { top: 8%;  right: -8%;  left: auto;  width: 54%; height: 15%; rotate: 3deg;  }
+  .collage-item--bg-3 { top: 20%; left: -7%;   right: auto; width: 55%; height: 16%; rotate: -3deg; }
+  .collage-item--bg-4 { top: 32%; right: -6%;  left: auto;  width: 56%; height: 15%; rotate: 4deg;  }
+  .collage-item--bg-5 { top: 44%; left: -8%;   right: auto; width: 54%; height: 16%; rotate: -5deg; }
+  .collage-item--bg-6 { top: 56%; right: -7%;  left: auto;  width: 55%; height: 15%; rotate: 2deg;  }
+  .collage-item--bg-7 { top: 68%; left: -6%;   right: auto; width: 56%; height: 16%; rotate: -2deg; }
+  .collage-item--bg-8 { top: 80%; right: -8%;  left: auto;  width: 54%; height: 18%; rotate: 4deg;  }
 
-  .collage--bg img:nth-child(1) { grid-row: span 20; }
-  .collage--bg img:nth-child(2) { grid-row: span 15; }
-  .collage--bg img:nth-child(3) { grid-row: span 17; }
-  .collage--bg img:nth-child(4) { grid-row: span 22; }
-  .collage--bg img:nth-child(5) { grid-row: span 15; }
-  .collage--bg img:nth-child(6) { grid-row: span 19; }
-  .collage--bg img:nth-child(7) { grid-row: span 16; }
-  .collage--bg img:nth-child(8) { grid-row: span 21; }
-
-  .collage--bg img {
-    filter: blur(2px) saturate(1.1);
-    border-radius: 10px;
+  .collage-scatter--bg .collage-item {
+    border-radius: 14px;
   }
 
   /* --- foto9.jpg: horizontal, ancho completo del contenedor (sin cambios) --- */
-  .eyes-frame {
+ .eyes-frame {
     width: 100%;
-    max-width: 420px;
-    aspect-ratio: 4 / 3;
-    border-radius: 20px;
-  }
+    max-width: 560px;
+    aspect-ratio: 16 / 9;
+}
 }
 
 /* --- Ajustes finos para celulares pequeños --- */
 @media (max-width: 480px) {
-  .collage--four {
-    gap: 3px;
-    padding: 3px;
-  }
-
-  .collage__item {
-    border-radius: 10px;
-  }
-
   .stage__content {
     padding: 16px;
     gap: 18px;
@@ -677,8 +723,7 @@ button {
 
 /* --- Evita jank en las animaciones de collage en pantallas táctiles --- */
 @media (max-width: 768px) {
-  .collage__item img,
-  .collage--bg img {
+  .collage-item img {
     will-change: transform;
     backface-visibility: hidden;
   }
