@@ -366,8 +366,8 @@ button {
    APARTADO 3 — Fotografía de los ojos
    ===================================================================== */
 .eyes-frame {
-  width: min(90vw, 700px);
-  aspect-ratio: 16 / 9;
+  width: min(84vw, 460px);
+  aspect-ratio: 4 / 3;
   border-radius: 26px;
   overflow: hidden;
   box-shadow:
@@ -378,9 +378,6 @@ button {
 }
 
 .eyes-photo {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Muestra la imagen completa */
   animation: eyesZoom 10s ease-in-out infinite alternate;
 }
 
@@ -498,30 +495,192 @@ button {
 }
 
 /* =====================================================================
-   RESPONSIVE
+   RESPONSIVE — REDISEÑO MÓVIL
+   Los collages de 4 fotos se reorganizan en un mosaico dinámico estilo
+   Instagram/Pinterest (una foto grande + fotos más pequeñas) en vez de
+   comprimirse en 4 columnas iguales, que era lo que las cortaba
+   demasiado. Cada celda usa object-fit: cover, así que nunca se
+   deforman, solo se recortan de forma controlada y elegante.
    ===================================================================== */
-@media (max-width: 720px) {
-  .glass-card {
-    border-radius: 22px;
-    padding: 26px 20px;
+@media (max-width: 768px) {
+
+  /* --- Mosaico apartado 1 (foto1–foto4): 1 grande + 2 medianas + 1 tira --- */
+  .collage--four {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: 1fr 1fr 0.85fr;
+    grid-template-areas:
+      "big  s1"
+      "big  s2"
+      "s3   s3";
+    gap: 5px;
+    padding: 5px;
+    background: var(--wine-900);
   }
 
-  .btn {
-    padding: 16px 36px;
+  /* --- Mosaico apartado 2 (foto5–foto8): variante espejo para dar variedad --- */
+  .collage--variant-b {
+    grid-template-columns: 1fr 1.15fr;
+    grid-template-areas:
+      "s1   big"
+      "s2   big"
+      "s3   s3";
   }
 
-  .collage--bg {
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-}
+  .collage__item--1 { grid-area: big; }
+  .collage__item--2 { grid-area: s1; }
+  .collage__item--3 { grid-area: s2; }
+  .collage__item--4 { grid-area: s3; }
 
-@media (max-width: 420px) {
+  .collage--variant-b .collage__item--1 { grid-area: big; }
+  .collage--variant-b .collage__item--2 { grid-area: s1; }
+  .collage--variant-b .collage__item--3 { grid-area: s2; }
+  .collage--variant-b .collage__item--4 { grid-area: s3; }
+
+  .collage__item {
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(28, 5, 13, 0.4);
+  }
+
+  /* Sin rotación en el mosaico: con celdas de tamaños distintos,
+     rotar dejaría huecos. Se conserva un ligero zoom para profundidad. */
   .collage__item--1,
   .collage__item--2,
   .collage__item--3,
   .collage__item--4 {
-    transform: scale(1.15) rotate(0deg);
+    transform: scale(1.04) rotate(0deg);
+  }
+
+  .stage--active .collage__item img {
+    transform: scale(1.07);
+  }
+
+  /* --- Contenido central: márgenes y tipografía cómodos --- */
+  .stage__content {
+    padding: 20px;
+    gap: 22px;
+  }
+
+  .stage__content--final {
+    gap: 24px;
+  }
+
+  .hello-text {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .question-text {
+    font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+  }
+
+  /* --- Botones: área táctil cómoda para el dedo --- */
+  .btn {
+    width: 100%;
+    max-width: 340px;
+    min-height: 52px;
+    padding: 15px 28px;
+    font-size: 1rem;
+  }
+
+  /* --- Cartas de vidrio: se ajustan al ancho sin salirse --- */
+  .glass-card {
+    max-width: 100%;
+    width: 100%;
+    border-radius: 20px;
+    padding: 24px 20px;
+  }
+
+  .glass-card--large {
+    max-width: 100%;
+  }
+
+  .card-quote {
+    font-size: clamp(1.05rem, 4.6vw, 1.3rem);
+    line-height: 1.5;
+  }
+
+  /* --- Collage de fondo (apartado 3): mosaico tipo Pinterest (alturas
+     alternadas) usando filas base pequeñas y "grid-row: span" --- */
+  .collage--bg {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none;
+    grid-auto-rows: 8px;
+    grid-auto-flow: row dense;
+    gap: 4px;
+    padding: 4px;
+  }
+
+  .collage--bg img:nth-child(1) { grid-row: span 20; }
+  .collage--bg img:nth-child(2) { grid-row: span 15; }
+  .collage--bg img:nth-child(3) { grid-row: span 17; }
+  .collage--bg img:nth-child(4) { grid-row: span 22; }
+  .collage--bg img:nth-child(5) { grid-row: span 15; }
+  .collage--bg img:nth-child(6) { grid-row: span 19; }
+  .collage--bg img:nth-child(7) { grid-row: span 16; }
+  .collage--bg img:nth-child(8) { grid-row: span 21; }
+
+  .collage--bg img {
+    filter: blur(2px) saturate(1.1);
+    border-radius: 10px;
+  }
+
+  /* --- foto9.jpg: horizontal, ancho completo del contenedor (sin cambios) --- */
+  .eyes-frame {
+    width: 100%;
+    max-width: 420px;
+    aspect-ratio: 4 / 3;
+    border-radius: 20px;
+  }
+}
+
+/* --- Ajustes finos para celulares pequeños --- */
+@media (max-width: 480px) {
+  .collage--four {
+    gap: 3px;
+    padding: 3px;
+  }
+
+  .collage__item {
+    border-radius: 10px;
+  }
+
+  .stage__content {
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .hello-text {
+    font-size: clamp(2rem, 11vw, 2.6rem);
+  }
+
+  .btn {
+    max-width: 100%;
+    padding: 14px 22px;
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+  }
+
+  .glass-card {
+    padding: 20px 16px;
+    border-radius: 18px;
+  }
+
+  .card-quote {
+    font-size: clamp(1rem, 4.8vw, 1.15rem);
+  }
+
+  .eyes-frame {
+    max-width: 100%;
+    aspect-ratio: 3 / 2;
+  }
+}
+
+/* --- Evita jank en las animaciones de collage en pantallas táctiles --- */
+@media (max-width: 768px) {
+  .collage__item img,
+  .collage--bg img {
+    will-change: transform;
+    backface-visibility: hidden;
   }
 }
 
