@@ -21,8 +21,8 @@ function initPetals() {
   const petalTypes = ['🌸', '🌹', '💮', '🌺', '🏵️'];
 
   // Cantidad de elementos cayendo simultáneamente (ajustado para rendimiento)
-  const isMobile = window.innerWidth <= 640;
-  const petalCount = isMobile ? 16 : 26;
+  const width = window.innerWidth;
+  const petalCount = width <= 480 ? 12 : width <= 768 ? 16 : 26;
 
   for (let i = 0; i < petalCount; i++) {
     createPetal(layer, petalTypes);
@@ -69,8 +69,8 @@ function initSparkles() {
   const layer = document.getElementById('sparklesLayer');
   if (!layer) return;
 
-  const isMobile = window.innerWidth <= 640;
-  const sparkleCount = isMobile ? 18 : 32;
+  const width = window.innerWidth;
+  const sparkleCount = width <= 480 ? 14 : width <= 768 ? 18 : 32;
 
   for (let i = 0; i < sparkleCount; i++) {
     createSparkle(layer);
